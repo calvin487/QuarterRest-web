@@ -678,8 +678,170 @@
   .footer-brand { grid-column: 1 / -1; }
 }
 
-@media (max-width: 640px) {
+/* ─── Hamburger ───────────────────────────────────────────────────── */
+
+.hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 40px;
+  height: 40px;
+  padding: 8px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  border-radius: var(--radius-sm);
+  transition: background 0.2s;
+}
+
+.hamburger:hover { background: rgba(255, 255, 255, 0.08); }
+
+.hamburger span {
+  display: block;
+  width: 100%;
+  height: 2px;
+  background: var(--accent-light);
+  border-radius: 2px;
+  transition: transform 0.3s, opacity 0.3s;
+  transform-origin: center;
+}
+
+.hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+.hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+/* ─── Mobile Nav ──────────────────────────────────────────────────── */
+
+.mobile-nav {
+  display: none;
+  background: var(--primary);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.35s ease;
+}
+
+.mobile-nav.open {
+  max-height: 600px;
+}
+
+.mobile-nav-item {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.mobile-nav-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 16px 20px;
+  font-size: 16px;
+  font-weight: 500;
+  color: rgba(245, 230, 211, 0.85);
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  text-decoration: none;
+  transition: color 0.2s, background 0.2s;
+}
+
+.mobile-nav-link:hover,
+.mobile-nav-link.active { color: var(--accent); }
+
+.mobile-arrow {
+  font-size: 12px;
+  opacity: 0.6;
+  transition: transform 0.25s;
+  display: inline-block;
+}
+
+.mobile-arrow.open { transform: rotate(180deg); }
+
+.mobile-dropdown {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.mobile-dropdown.open { max-height: 300px; }
+
+.mobile-dropdown-item {
+  display: block;
+  padding: 12px 20px 12px 36px;
+  font-size: 14px;
+  color: rgba(245, 230, 211, 0.65);
+  text-decoration: none;
+  transition: color 0.2s;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.mobile-dropdown-item:last-child { border-bottom: none; }
+.mobile-dropdown-item:hover { color: var(--accent); }
+
+/* ─── RWD Breakpoints ─────────────────────────────────────────────── */
+
+@media (max-width: 768px) {
+  /* Header */
+  .nav { display: none; }
+  .hamburger { display: flex; }
+  .mobile-nav { display: block; }
+
+  /* Hero */
+  .hero { min-height: 380px; padding: 60px 20px; }
+  .hero-desc { font-size: 15px; }
+
+  /* Page Hero */
+  .page-hero { padding: 40px 20px; }
+  .page-hero-icon { font-size: 36px; }
+
+  /* Sections */
+  .page-content { padding: 48px 20px; }
+  .section-header { margin-bottom: 36px; }
+  .section-alt { padding: 48px 20px; }
+
+  /* Feature strip */
+  .feature-strip { grid-template-columns: 1fr; }
+  .feature-item {
+    border-right: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 28px 24px;
+  }
+  .feature-item:last-child { border-bottom: none; }
+
+  /* Cards */
+  .card-grid-4,
+  .card-grid-3,
+  .card-grid-2 { grid-template-columns: 1fr; }
+  .card { padding: 24px 20px; }
+
+  /* Product card */
+  .product-footer { flex-direction: column; align-items: flex-start; gap: 12px; }
+  .btn-sm { width: 100%; justify-content: center; }
+
+  /* Footer */
+  .footer { padding: 40px 20px 0; }
+  .footer-inner {
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+  .footer-brand { grid-column: 1 / -1; }
+  .footer-brand p { max-width: 100%; }
+}
+
+@media (max-width: 480px) {
   .header-inner { padding: 0 16px; }
-  .hero { min-height: 400px; padding: 60px 16px; }
-  .page-content { padding: 48px 16px; }
+  .logo { font-size: 18px; }
+
+  .hero { padding: 48px 16px; }
+  .hero-actions { flex-direction: column; align-items: center; }
+  .btn { width: 100%; justify-content: center; }
+
+  .page-content { padding: 36px 16px; }
+
+  .footer-inner { grid-template-columns: 1fr; }
+  .footer-col { border-bottom: 1px solid rgba(255,255,255,0.06); padding-bottom: 16px; }
+  .footer-col:last-child { border-bottom: none; }
 }

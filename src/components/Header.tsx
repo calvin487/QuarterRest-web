@@ -35,13 +35,22 @@ const NAV_ITEMS = [
 
 export default function Header() {
   const [activeMenu, setActiveMenu] = useState<string | null>(null)
+  const [mobileOpen, setMobileOpen] = useState(false)
+  const [mobileExpanded, setMobileExpanded] = useState<string | null>(null)
+
+  const closeMobile = () => {
+    setMobileOpen(false)
+    setMobileExpanded(null)
+  }
 
   return (
     <header className="header">
       <div className="header-inner">
-        <Link to="/" className="logo">
+        <Link to="/" className="logo" onClick={closeMobile}>
           ☕ CoffeeWorld
         </Link>
+
+        {/* 電腦版 Nav */}
         <nav className="nav">
           {NAV_ITEMS.map((item) => (
             <div
@@ -75,6 +84,63 @@ export default function Header() {
             </div>
           ))}
         </nav>
+
+        {/* 手機版漢堡按鈕 */}
+        <button
+          className={`hamburger${mobileOpen ? ' open' : ''}`}
+          onClick={() => setMobileOpen(!mobileOpen)}
+          aria-label="開關選單"
+        >
+          <span />
+          <span />
+          <span />
+        </button>
+      </div>
+
+      {/* 手機版展開選單 */}
+      <div className={`mobile-nav${mobileOpen ? ' open' : ''}`}>
+        {NAV_ITEMS.map((item) => (
+          <div key={item.label} className="mobile-nav-item">
+            {item.children.length > 0 ? (
+              <>
+                <button
+                  className="mobile-nav-link"
+                  onClick={() =>
+                    setMobileExpanded(mobileExpanded === item.label ? null : item.label)
+                  }
+                >
+                  {item.label}
+                  <span className={`mobile-arrow${mobileExpanded === item.label ? ' open' : ''}`}>
+                    ▾
+                  </span>
+                </button>
+                <div className={`mobile-dropdown${mobileExpanded === item.label ? ' open' : ''}`}>
+                  <Link to={item.path} className="mobile-dropdown-item" onClick={closeMobile}>
+                    全部{item.label}
+                  </Link>
+                  {item.children.map((child) => (
+                    <Link
+                      key={child.path}
+                      to={child.path}
+                      className="mobile-dropdown-item"
+                      onClick={closeMobile}
+                    >
+                      {child.label}
+                    </Link>
+                  ))}
+                </div>
+              </>
+            ) : (
+              <NavLink
+                to={item.path}
+                className={({ isActive }) => `mobile-nav-link${isActive ? ' active' : ''}`}
+                onClick={closeMobile}
+              >
+                {item.label}
+              </NavLink>
+            )}
+          </div>
+        ))}
       </div>
     </header>
   )
