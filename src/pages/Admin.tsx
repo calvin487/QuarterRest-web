@@ -19,7 +19,7 @@ const PRODUCT_FIELDS: FieldConfig[] = [
   { key: 'description', label: '描述', type: 'textarea', placeholder: '商品說明' },
   { key: 'icon', label: '圖示（Emoji）', type: 'text', placeholder: '例：🫘' },
   { key: 'tag', label: '標籤', type: 'text', placeholder: '例：日曬' },
-  { key: 'price', label: '價格', type: 'text', placeholder: '例：NT$ 580' },
+  { key: 'price', label: '價格（只輸入數字）', type: 'text', placeholder: '例：580' },
   { key: 'category', label: '分類', type: 'select', options: [
     { value: 'coffee-beans', label: '咖啡豆' },
     { value: 'equipment', label: '器材' },
@@ -87,13 +87,21 @@ export default function Admin() {
   }
 
   function openEdit(item: Record<string, string>) {
-    setEditing(item)
+    // 編輯商品時，去掉 "NT$ " 前綴只顯示數字
+    if (tab === 'products' && item.price) {
+      setEditing({ ...item, price: item.price.replace('NT$ ', '') })
+    } else {
+      setEditing(item)
+    }
     setModalOpen(true)
   }
 
   function handleSubmit(values: Record<string, string>) {
     if (tab === 'products') {
-      const data = values as unknown as Omit<Product, 'id'>
+      const data = {
+        ...values,
+        price: `NT$ ${values.price.replace('NT$ ', '')}`,  // 自動加上 NT$
+      } as unknown as Omit<Product, 'id'>
       editing ? updateProduct(editing.id, data) : createProduct(data)
     } else if (tab === 'blog') {
       const data = values as unknown as Omit<BlogPost, 'id'>
