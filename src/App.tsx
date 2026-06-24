@@ -7,6 +7,7 @@ import Bean from './pages/Bean'
 import Brew from './pages/Brew'
 import Blog from './pages/Blog'
 import Admin from './pages/Admin'
+import AdminLogin from './pages/AdminLogin'
 import './App.css'
 
 function App() {
@@ -14,6 +15,7 @@ function App() {
     <BrowserRouter>
       <Routes>
         {/* 後台（無 Header/Footer） */}
+        <Route path="/admin/login" element={<AdminLogin />} />
         <Route path="/admin" element={<Admin />} />
 
         {/* 前台 */}

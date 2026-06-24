@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import DataTable from '../components/admin/DataTable'
 import FormModal, { type FieldConfig } from '../components/admin/FormModal'
 import {
@@ -64,6 +64,19 @@ const BREW_FIELDS: FieldConfig[] = [
 // ─── 主元件 ────────────────────────────────────────────────────────
 
 export default function Admin() {
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    if (!sessionStorage.getItem('admin_auth')) {
+      navigate('/admin/login')
+    }
+  }, [])
+
+  function handleLogout() {
+    sessionStorage.removeItem('admin_auth')
+    navigate('/admin/login')
+  }
+
   const [tab, setTab] = useState<Tab>('products')
   const [products, setProducts] = useState<Product[]>([])
   const [blogPosts, setBlogPosts] = useState<BlogPost[]>([])
@@ -163,7 +176,10 @@ export default function Admin() {
       {/* 頂部列 */}
       <header className="admin-header">
         <span className="admin-logo">☕ CoffeeWorld 後台</span>
-        <Link to="/" className="admin-front-link" target="_blank">← 前台預覽</Link>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+          <Link to="/" className="admin-front-link" target="_blank">← 前台預覽</Link>
+          <button className="admin-logout-btn" onClick={handleLogout}>登出</button>
+        </div>
       </header>
 
       {/* 內容區 */}
